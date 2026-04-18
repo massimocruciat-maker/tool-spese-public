@@ -125,6 +125,7 @@ input[type=number]::-webkit-inner-spin-button { opacity: 1; }
 
 /* MOBILE */
 .mob { display: none; }
+
 @media screen and (max-width: 640px) {
   .page { padding: 0; }
   .hdr { border-radius: 0; }
@@ -132,27 +133,124 @@ input[type=number]::-webkit-inner-spin-button { opacity: 1; }
   .setup { grid-template-columns: 1fr; }
   .cards { grid-template-columns: 1fr; gap: 8px; }
   .tw { display: none; }
-  .mob { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
-  .mv { background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 12px 14px; }
+
+  .mob {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .mv {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 12px 14px;
+    position: relative;
+    z-index: 1;
+  }
+
   .mv.tok { background: #f0fdf4; border-color: #86efac; }
   .mv.twn { background: #fefce8; border-color: #fde047; }
   .mv.tbd { background: #fff1f2; border-color: #fca5a5; }
-  .mv-hdr { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; cursor: pointer; }
-  .mv-num { font-size: 11px; font-weight: 700; color: #38A3A5; }
-  .mv-nome { font-size: 13px; font-weight: 700; color: #22577A; flex: 1; }
-  .mv-chev { font-size: 11px; color: #9ca3af; transition: transform 0.2s; }
+
+  .mv-hdr {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    min-height: 44px;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    position: relative;
+    z-index: 2;
+  }
+
+  .mv-num {
+    font-size: 11px;
+    font-weight: 700;
+    color: #38A3A5;
+  }
+
+  .mv-nome {
+    font-size: 13px;
+    font-weight: 700;
+    color: #22577A;
+    flex: 1;
+  }
+
+  .mv-chev {
+    font-size: 11px;
+    color: #9ca3af;
+    transition: transform 0.2s;
+    pointer-events: none;
+  }
+
   .mv-chev.open { transform: rotate(180deg); }
+
   .mv-body { display: none; }
   .mv-body.open { display: block; }
-  .mv-row { display: flex; align-items: center; gap: 8px; padding: 5px 0; border-bottom: 1px solid #f3f4f6; }
+
+  .mv-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 0;
+    border-bottom: 1px solid #f3f4f6;
+  }
+
   .mv-row:last-child { border-bottom: none; }
-  .mv-label { font-size: 12px; color: #374151; flex: 1; }
-  .mv-input { width: 90px; text-align: right; font-size: 13px; padding: 5px 7px; border: 1px solid #d1d5db; border-radius: 6px; }
+
+  .mv-label {
+    font-size: 12px;
+    color: #374151;
+    flex: 1;
+  }
+
+  .mv-input {
+    width: 90px;
+    text-align: right;
+    font-size: 13px;
+    padding: 5px 7px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    background: #fff;
+  }
+
   .mv-input.empty { border-color: #fca5a5; }
-  .mv-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 8px; border-top: 1px solid #e5e7eb; margin-top: 6px; }
-  .mv-istat-ref { font-size: 11px; color: #9ca3af; }
-  .mv-sem { display: flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 600; }
-  .mv-nota { font-size: 11px; color: #6b7280; font-style: italic; margin-top: 2px; }
+
+  .mv-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 8px;
+    border-top: 1px solid #e5e7eb;
+    margin-top: 6px;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .mv-istat-ref {
+    font-size: 11px;
+    color: #9ca3af;
+  }
+
+  .mv-sem {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .mv-nota {
+    font-size: 11px;
+    color: #6b7280;
+    font-style: italic;
+    margin-top: 2px;
+  }
 }
 </style>
 <!-- Google Analytics GA4 -->
@@ -489,7 +587,61 @@ function toggleMob(i) {
   if(isOpen){ d.classList.remove('open'); ch.classList.remove('open'); openVoceMob=-1; }
   else { d.classList.add('open'); ch.classList.add('open'); openVoceMob=i; }
 }
+function closeAllMob(exceptIndex) {
+  for (var k = 0; k < VOCI_CONFIG.length; k++) {
+    if (k === exceptIndex) continue;
+    var d = document.getElementById('mdet_' + k);
+    var ch = document.getElementById('mchev_' + k);
+    var hdr = document.querySelector('.mv-hdr[data-idx="' + k + '"]');
+    if (d) d.classList.remove('open');
+    if (ch) ch.classList.remove('open');
+    if (hdr) hdr.setAttribute('aria-expanded', 'false');
+  }
+}
 
+function toggleMob(i) {
+  var d = document.getElementById('mdet_' + i);
+  var ch = document.getElementById('mchev_' + i);
+  var hdr = document.querySelector('.mv-hdr[data-idx="' + i + '"]');
+  if (!d || !ch) return;
+
+  var isOpen = d.classList.contains('open');
+
+  closeAllMob(i);
+
+  if (isOpen) {
+    d.classList.remove('open');
+    ch.classList.remove('open');
+    if (hdr) hdr.setAttribute('aria-expanded', 'false');
+    openVoceMob = -1;
+  } else {
+    d.classList.add('open');
+    ch.classList.add('open');
+    if (hdr) hdr.setAttribute('aria-expanded', 'true');
+    openVoceMob = i;
+  }
+}
+
+function bindMobileAccordions() {
+  var headers = document.querySelectorAll('.mv-hdr[data-idx]');
+  headers.forEach(function(hdr) {
+    var idx = parseInt(hdr.getAttribute('data-idx'), 10);
+
+    hdr.addEventListener('click', function(e) {
+      if (e.target.closest('.info-btn')) return;
+      e.preventDefault();
+      toggleMob(idx);
+    });
+
+    hdr.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggleMob(idx);
+      }
+    });
+  });
+}
+  
 function update() {
   var area=document.getElementById('area').value;
   var comp=document.getElementById('comp').value;
@@ -628,27 +780,29 @@ function build() {
         fieldsHtml+='<div class="mv-row"><span class="mv-label">'+sv.t+nota+'</span><input type="number" id="msv_'+i+'_'+j+'" class="mv-input'+(pv[j]===''||pv[j]===undefined?' empty':'')+'" min="0" step="1" value="'+(pv[j]||'')+'" placeholder="0" oninput="svInput(this);syncMobSv('+i+','+j+');update()"/></div>';
       }
     }
-    div.innerHTML=
-      '<div class="mv-hdr"'+(v.soloIstruzioni?'':' onclick="toggleMob('+i+')"')+'>'+
-        '<span class="mv-num">'+v.id+'</span>'+
-        '<span class="mv-nome">'+v.nome+'</span>'+
-        '<button class="info-btn" onclick="event.stopPropagation();showTooltip('+i+')" title="Istruzioni" style="margin-right:6px">i</button>'+
-        (v.soloIstruzioni?'':'<span class="mv-chev" id="mchev_'+i+'">\u25bc</span>')+
-      '</div>'+
-      '<div class="mv-body"'+(v.soloIstruzioni?' style="display:block"':'')+' id="mdet_'+i+'>'+
-        fieldsHtml+
-        '<div class="mv-bottom">'+
-          '<span class="mv-istat-ref" id="mref_'+i+'">ISTAT: '+fmt(ref)+' \u20ac</span>'+
-          '<div style="display:flex;align-items:center;gap:6px">'+
-            '<span id="mpct_'+i+'" style="font-size:12px;font-weight:600;color:#9ca3af">\u2014</span>'+
-            '<div class="mv-sem" id="mes_'+i+'"><span style="color:#9ca3af">\u2014</span></div>'+
-          '</div>'+
-          '<span id="mimp_'+i+'" style="font-size:13px;font-weight:600;color:#22577A">\u2014</span>'+
-        '</div>'+
-      '</div>';
-    mob.appendChild(div);
-  }
-  applyLayout(); update();
+    div.innerHTML =
+  '<div class="mv-hdr"' +
+    (v.soloIstruzioni ? '' : ' data-idx="' + i + '" role="button" tabindex="0" aria-expanded="false"') +
+    '>' +
+      '<span class="mv-num">' + v.id + '</span>' +
+      '<span class="mv-nome">' + v.nome + '</span>' +
+      '<button class="info-btn" type="button" onclick="event.stopPropagation();showTooltip(' + i + ')" title="Istruzioni" style="margin-right:6px">i</button>' +
+      (v.soloIstruzioni ? '' : '<span class="mv-chev" id="mchev_' + i + '">\u25bc</span>') +
+  '</div>' +
+  '<div class="mv-body' + (v.soloIstruzioni ? ' open' : '') + '" id="mdet_' + i + '">' +
+    fieldsHtml +
+    '<div class="mv-bottom">' +
+      '<span class="mv-istat-ref" id="mref_' + i + '">ISTAT: ' + fmt(ref) + ' \u20ac</span>' +
+      '<div style="display:flex;align-items:center;gap:6px">' +
+        '<span id="mpct_' + i + '" style="font-size:12px;font-weight:600;color:#9ca3af">\u2014</span>' +
+        '<div class="mv-sem" id="mes_' + i + '"><span style="color:#9ca3af">\u2014</span></div>' +
+      '</div>' +
+      '<span id="mimp_' + i + '" style="font-size:13px;font-weight:600;color:#22577A">\u2014</span>' +
+    '</div>' +
+  '</div>';
+    applyLayout();
+  bindMobileAccordions();
+  update();
 }
 
 function syncMob(i){ var m=document.getElementById('minp_'+i),d=document.getElementById('inp_'+i); if(m&&d) d.value=m.value; }
