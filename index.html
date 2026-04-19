@@ -637,16 +637,16 @@ div.innerHTML=
   '</div>'+
   '<div class="mv-body'+(v.soloIstruzioni?' open':'')+'" id="mdet_'+i+'">'+
     fieldsHtml+
-    '<div class="mv-bottom">'+
-      '<span class="mv-istat-ref" id="mref_'+i+'">ISTAT: '+fmt(ref)+' \u20ac</span>'+
-      '<div style="display:flex;align-items:center;gap:6px">'+
-        '<span id="mpct_'+i+'" style="font-size:12px;font-weight:600;color:#9ca3af">\u2014</span>'+
-        '<div class="mv-sem" id="mes_'+i+'"><span style="color:#9ca3af">\u2014</span></div>'+
-      '</div>'+
-      '<span id="mimp_'+i+'" style="font-size:13px;font-weight:600;color:#22577A">\u2014</span>'+
-    '</div>'+
-  '</div>';
-mob.appendChild(div);
+  '</div>'+
+'<div class="mv-bottom">'+
+  '<span class="mv-istat-ref" id="mref_'+i+'">ISTAT: '+fmt(ref)+' \u20ac</span>'+
+  '<div style="display:flex;align-items:center;gap:6px">'+
+    '<span id="mpct_'+i+'" style="font-size:12px;font-weight:600;color:#9ca3af">\u2014</span>'+
+    '<div class="mv-sem" id="mes_'+i+'"><span style="color:#9ca3af">\u2014</span></div>'+
+  '</div>'+
+  '<span id="mimp_'+i+'" style="font-size:13px;font-weight:600;color:#22577A">\u2014</span>'+
+'</div>';
+    mob.appendChild(div);
   }
 applyLayout();
 bindMobileAccordions();
