@@ -663,7 +663,20 @@ function applyLayout(){
 }
 function bindMobileAccordions() {
   document.querySelectorAll('.mv-hdr[data-idx]').forEach(function(el) {
-    el.addEventListener('click', function() {
+    var touchHandled = false;
+
+    el.addEventListener('touchend', function(e) {
+      e.preventDefault();
+      touchHandled = true;
+      var idx = el.getAttribute('data-idx');
+      if (idx !== null) toggleMob(parseInt(idx, 10));
+    }, { passive: false });
+
+    el.addEventListener('click', function(e) {
+      if (touchHandled) {
+        touchHandled = false;
+        return;
+      }
       var idx = el.getAttribute('data-idx');
       if (idx !== null) toggleMob(parseInt(idx, 10));
     });
