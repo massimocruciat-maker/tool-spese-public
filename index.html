@@ -629,7 +629,7 @@ function build() {
       }
     }
 div.innerHTML=
-  '<div class="mv-hdr"'+(v.soloIstruzioni?'':' data-idx="'+i+'"')+'>'+    
+  '<div class="mv-body'+(v.soloIstruzioni?' open':'')+'" id="mdet_'+i+'">'    
         '<span class="mv-num">'+v.id+'</span>'+
         '<span class="mv-nome">'+v.nome+'</span>'+
         '<button class="info-btn" onclick="event.stopPropagation();showTooltip('+i+')" title="Istruzioni" style="margin-right:6px">i</button>'+
